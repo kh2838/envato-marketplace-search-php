@@ -303,5 +303,5 @@ function ems_stripslashes_deep($value)
     $value = stripslashes($value);
   }
 
-	return $value;
+  return $value;
 }
