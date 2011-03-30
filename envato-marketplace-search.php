@@ -56,23 +56,23 @@ function envato_marketplace_search( $args = '' )
 {
   // default arguments
   $defaults = array(
-		'limit'     => 10, 
-		'site'      => '', 
-		'type'      => '',
-		'query'     => '',
-		'variable'  => 's',
-		'referral'  => '',
-		'echo'      => true
-	);
+    'limit'     => 10, 
+    'site'      => '', 
+    'type'      => '',
+    'query'     => '',
+    'variable'  => 's',
+    'referral'  => '',
+    'echo'      => true
+  );
   
   // parse incomming $args into an array and merge it with $defaults
-	$args = ems_parse_args( $args, $defaults );
+  $args = ems_parse_args( $args, $defaults );
 	
-	// declare each item in $args as its own variable
-	extract( $args, EXTR_SKIP );
+  // declare each item in $args as its own variable
+  extract( $args, EXTR_SKIP );
 	
-	// setup query
-	if ( !$query )
+  // setup query
+  if ( !$query )
     $query = ( isset( $_REQUEST[$variable] ) ) ? trim( $_REQUEST[$variable] ) : '';
   
   // combat XSS attempts on search query
@@ -83,7 +83,7 @@ function envato_marketplace_search( $args = '' )
   if ( !$query )
     return;
 	
-	// set empty return variable
+  // set empty return variable
   $return = '';
   
   // build search expresssion
@@ -147,7 +147,7 @@ function envato_marketplace_search( $args = '' )
   }
   
   if ( !$echo )
-		return $return;
+    return $return;
   
   echo $return;
 }
@@ -234,17 +234,19 @@ function ems_get_json_contents_via_curl( $address )
  * @param array $defaults Array that serves as the defaults.
  * @return array Merged user defined values with defaults.
  */
-function ems_parse_args( $args, $defaults = '' ) {
-	if ( is_object( $args ) )
-		$r = get_object_vars( $args );
-	elseif ( is_array( $args ) )
-		$r =& $args;
-	else
-		ems_parse_str( $args, $r );
-
-	if ( is_array( $defaults ) )
-		return array_merge( $defaults, $r );
-	return $r;
+function ems_parse_args( $args, $defaults = '' ) 
+{
+  if ( is_object( $args ) )
+    $r = get_object_vars( $args );
+  elseif ( is_array( $args ) )
+    $r =& $args;
+  else
+    ems_parse_str( $args, $r );
+  
+  if ( is_array( $defaults ) )
+    return array_merge( $defaults, $r );
+    
+  return $r;
 }
 
 /**
@@ -263,11 +265,11 @@ function ems_parse_args( $args, $defaults = '' ) {
  */
 function ems_parse_str( $string, &$array ) 
 {
-	parse_str( $string, $array );
-	if ( get_magic_quotes_gpc() )
-		$array = ems_stripslashes_deep( $array );
+  parse_str( $string, $array );
+  if ( get_magic_quotes_gpc() )
+    $array = ems_stripslashes_deep( $array );
 		
-	return $array;
+  return $array;
 }
 
 /**
@@ -284,16 +286,22 @@ function ems_parse_str( $string, &$array )
  */
 function ems_stripslashes_deep($value) 
 {
-	if ( is_array($value) ) {
-		$value = array_map('ems_stripslashes_deep', $value);
-	} elseif ( is_object($value) ) {
-		$vars = get_object_vars( $value );
-		foreach ($vars as $key=>$data) {
-			$value->{$key} = ems_stripslashes_deep( $data );
-		}
-	} else {
-		$value = stripslashes($value);
-	}
+  if ( is_array($value) ) 
+  {
+    $value = array_map('ems_stripslashes_deep', $value);
+  } 
+  elseif ( is_object($value) ) 
+  {
+    $vars = get_object_vars( $value );
+    foreach ($vars as $key=>$data)
+    {
+      $value->{$key} = ems_stripslashes_deep( $data );
+    }
+  } 
+  else 
+  {
+    $value = stripslashes($value);
+  }
 
 	return $value;
 }
